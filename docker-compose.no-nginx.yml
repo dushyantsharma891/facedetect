@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  face-detection:
+    build: .
+    ports:
+      - "3000:3000"  # Expose directly to host
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./uploads:/app/uploads
+      - ./models:/app/models
+      - ./known_faces:/app/known_faces
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/working"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 1G
