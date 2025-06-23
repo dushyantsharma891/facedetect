@@ -1,1 +1,0 @@
-🎯 AI-powered REST API for real-time face detection, matching & object recognition. Detects phones, cameras, laptops with 95%+ accuracy. Built with Node.js, TensorFlow.js, Docker. Production-ready with SSL, clustering & multi-site deployment. Perfect for security systems & image analysis.

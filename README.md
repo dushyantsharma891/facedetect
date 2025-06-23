@@ -277,10 +277,8 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 ## 🆘 Support
 
 ### 📞 **Need Help?**
-- 📧 **Email**: support@yourcompany.com
-- 💬 **Discord**: [Join our community](https://discord.gg/yourserver)
-- 📖 **Documentation**: [Full docs](https://docs.yoursite.com)
-- 🐛 **Issues**: [GitHub Issues](https://github.com/yourrepo/issues)
+- 📧 **Email**: dushyantsharma891@gmail.com.com
+- 🐛 **Issues**: [GitHub Issues](https://github.com/facedetect/issues)
 
 ### 🔗 **Quick Links**
 - [🐳 Docker Setup Guide](README-Docker.md)

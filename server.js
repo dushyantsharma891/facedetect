@@ -28,7 +28,7 @@ const PORT = 3000;
   const app = express();
 
   // Middleware with increased limits
-  app.use(express.json({ limit: '10000mb' }));
+  app.use(express.json({ limit: '1000mb' }));
   app.use(express.urlencoded({ extended: true, limit: '10000mb' }));
 
   // Register canvas

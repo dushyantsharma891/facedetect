@@ -12,6 +12,9 @@ services:
       - ./models:/app/models
       - ./known_faces:/app/known_faces
     restart: unless-stopped
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/working"]
       interval: 30s

@@ -1,19 +1,18 @@
-FROM node:18-alpine
+FROM node:18-slim
 
-# Install system dependencies for canvas and face-api
-RUN apk add --no-cache \
-    cairo-dev \
-    jpeg-dev \
-    pango-dev \
-    musl-dev \
-    giflib-dev \
-    pixman-dev \
-    pangomm-dev \
-    libjpeg-turbo-dev \
-    freetype-dev \
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
     python3 \
-    make \
-    g++
+    python3-pip \
+    libcairo2-dev \
+    libpango1.0-dev \
+    libjpeg-dev \
+    libgif-dev \
+    librsvg2-dev \
+    libpixman-1-dev \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
