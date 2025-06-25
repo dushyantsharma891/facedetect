@@ -397,7 +397,7 @@ app.post("/detect-base64", async (req, res) => {
     const faceResult = distance < 0.5;
     console.log("🚀 ~ app.post ~ faceResult:", { match: faceResult, distance: distance.toFixed(4) })
 
-    return res.json({ match: faceResult, distance: distance.toFixed(4) });
+    return res.json({ face: faceResult, distance: distance.toFixed(4) });
   } catch (err) {
     console.error("Detection error:", err);
     return res.status(500).json({ error: "Face detection failed" });
