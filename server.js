@@ -377,6 +377,7 @@ app.post("/detect-base64", async (req, res) => {
   try {
     await loadModelsOnce();
     const { image, userImage } = req.body;
+    console.log("🚀 ~ app.post ~ req.body:", req.body)
 
     if (!image || !userImage) {
       return res.status(400).json({ error: "Both images are required" });
@@ -389,9 +390,10 @@ app.post("/detect-base64", async (req, res) => {
     if (!knownDesc || !testDesc) {
       return res.status(400).json({ error: "Face not detected in one or both images" });
     }
-
+    
     const distance = faceapi.euclideanDistance(knownDesc, testDesc);
     const faceResult = distance < 0.5;
+    console.log("🚀 ~ app.post ~ faceResult:", { match: faceResult, distance: distance.toFixed(4) })
 
     return res.json({ match: faceResult, distance: distance.toFixed(4) });
   } catch (err) {
