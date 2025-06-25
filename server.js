@@ -289,6 +289,7 @@ app.post("/detect-base64/old", async (req, res) => {
 // API: POST /match-face (face matching only)
 app.post("/detect-base64", async (req, res) => {
   try {
+    console.log("🚀 ~ app.post ~ req.body:", req.body)
     await loadModelsOnce();
     const { image, userImage } = req.body;
     if (!image) return res.status(400).json({ error: "No image provided" });
