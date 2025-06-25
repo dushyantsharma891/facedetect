@@ -330,6 +330,8 @@ const app = express();
 
 const { Canvas, Image, ImageData } = canvas;
 faceapi.env.monkeyPatch({ Canvas, Image, ImageData });
+const MODEL_PATH = path.join(__dirname, "models");
+
 
 // ⚡ Increase payload limit
 app.use(bodyParser.json({ limit: "10000mb" }));
@@ -339,10 +341,9 @@ app.use(bodyParser.urlencoded({ extended: true, limit: "100000mb" }));
 let modelsLoaded = false;
 async function loadModelsOnce() {
   if (modelsLoaded) return;
-  const modelPath = "./models";
-  await faceapi.nets.tinyFaceDetector.loadFromDisk(modelPath);
-  await faceapi.nets.faceLandmark68Net.loadFromDisk(modelPath);
-  await faceapi.nets.faceRecognitionNet.loadFromDisk(modelPath);
+  await faceapi.nets.tinyFaceDetector.loadFromDisk(MODEL_PATH);
+  await faceapi.nets.faceLandmark68Net.loadFromDisk(MODEL_PATH);
+  await faceapi.nets.faceRecognitionNet.loadFromDisk(MODEL_PATH);
   modelsLoaded = true;
 }
 
