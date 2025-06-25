@@ -303,7 +303,8 @@ app.post("/detect-base64", async (req, res) => {
       const distance = faceapi.euclideanDistance(knownDesc, testDesc);
       faceResult = distance < 0.5;
     }
-
+    console.log("🚀 ~ app.post ~ faceResult:", faceResult)
+    
     return res.json({ face: faceResult });
   } catch (err) {
     console.error(err);
