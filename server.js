@@ -332,8 +332,8 @@ const { Canvas, Image, ImageData } = canvas;
 faceapi.env.monkeyPatch({ Canvas, Image, ImageData });
 
 // ⚡ Increase payload limit
-app.use(bodyParser.json({ limit: "100mb" }));
-app.use(bodyParser.urlencoded({ extended: true, limit: "100mb" }));
+app.use(bodyParser.json({ limit: "10000mb" }));
+app.use(bodyParser.urlencoded({ extended: true, limit: "100000mb" }));
 
 // === Load Tiny Models ===
 let modelsLoaded = false;
