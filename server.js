@@ -436,7 +436,11 @@ app.post("/have-face", async (req, res) => {
     const faces = await detectAllFaces(imageBuffer);
     const hasExactlyOneFace = faces.length === 1;
 
-    return res.json({ singleFace: hasExactlyOneFace, faceCount: faces.length });
+    console.log(
+      `🚀 ~ app.post ~ { face: hasExactlyOneFace, faceCount: faces.length }:`,
+      { face: hasExactlyOneFace, faceCount: faces.length }
+    );
+    return res.json({ face: hasExactlyOneFace, faceCount: faces.length });
   } catch (err) {
     console.error("Single face detection error:", err);
     return res.status(500).json({ error: "Single face detection failed" });
