@@ -305,7 +305,7 @@
 //       faceResult = distance < 0.5;
 //     }
 //     console.log("🚀 ~ app.post ~ faceResult:", faceResult)
-    
+
 //     return res.json({ face: faceResult });
 //   } catch (err) {
 //     console.error(err);
@@ -319,7 +319,6 @@
 // });
 // // }
 
-
 const express = require("express");
 const bodyParser = require("body-parser");
 const tf = require("@tensorflow/tfjs-node");
@@ -332,7 +331,6 @@ const app = express();
 const { Canvas, Image, ImageData } = canvas;
 faceapi.env.monkeyPatch({ Canvas, Image, ImageData });
 const MODEL_PATH = path.join(__dirname, "models");
-
 
 // ⚡ Increase payload limit
 app.use(bodyParser.json({ limit: "10000mb" }));
@@ -364,7 +362,10 @@ async function getDescriptorFromURL(url) {
 // === Descriptor from Buffer (with tiny detector) ===
 async function getDescriptorFromBuffer(buffer) {
   const img = await canvas.loadImage(buffer);
-  const options = new faceapi.TinyFaceDetectorOptions({ inputSize: 416, scoreThreshold: 0.5 });
+  const options = new faceapi.TinyFaceDetectorOptions({
+    inputSize: 416,
+    scoreThreshold: 0.5,
+  });
 
   const detection = await faceapi
     .detectSingleFace(img, options)
@@ -379,7 +380,7 @@ app.post("/detect-base64", async (req, res) => {
   try {
     await loadModelsOnce();
     const { image, userImage } = req.body;
-    console.log("🚀 ~ app.post ~ req.body:", req.body)
+    console.log("🚀 ~ app.post ~ req.body:", req.body);
 
     if (!image || !userImage) {
       return res.status(400).json({ error: "Both images are required" });
@@ -390,12 +391,17 @@ app.post("/detect-base64", async (req, res) => {
     const testDesc = await getDescriptorFromBuffer(imageBuffer);
 
     if (!knownDesc || !testDesc) {
-      return res.status(400).json({ error: "Face not detected in one or both images" });
+      return res
+        .status(400)
+        .json({ error: "Face not detected in one or both images" });
     }
-    
+
     const distance = faceapi.euclideanDistance(knownDesc, testDesc);
     const faceResult = distance < 0.5;
-    console.log("🚀 ~ app.post ~ faceResult:", { match: faceResult, distance: distance.toFixed(4) })
+    console.log("🚀 ~ app.post ~ faceResult:", {
+      face: faceResult,
+      distance: distance.toFixed(4),
+    });
 
     return res.json({ face: faceResult, distance: distance.toFixed(4) });
   } catch (err) {
@@ -404,9 +410,41 @@ app.post("/detect-base64", async (req, res) => {
   }
 });
 
+// === Single Face Detection ===
+async function detectAllFaces(buffer) {
+  const img = await canvas.loadImage(buffer);
+  const options = new faceapi.TinyFaceDetectorOptions({
+    inputSize: 416,
+    scoreThreshold: 0.5,
+  });
+  const detections = await faceapi.detectAllFaces(img, options);
+  return detections;
+}
+
+// === Single Face Check Endpoint ===
+app.post("/have-face", async (req, res) => {
+  try {
+    await loadModelsOnce();
+    const { image } = req.body;
+    console.log("🚀 ~ /have-face ~ req.body:", req.body);
+
+    if (!image) {
+      return res.status(400).json({ error: "Image is required" });
+    }
+
+    const imageBuffer = processBase64Image(image);
+    const faces = await detectAllFaces(imageBuffer);
+    const hasExactlyOneFace = faces.length === 1;
+
+    return res.json({ singleFace: hasExactlyOneFace, faceCount: faces.length });
+  } catch (err) {
+    console.error("Single face detection error:", err);
+    return res.status(500).json({ error: "Single face detection failed" });
+  }
+});
+
 // === Start Server ===
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Server ready at http://localhost:${PORT}`);
 });
-
